@@ -52,12 +52,14 @@ ARGV.each do |file|
   File.open("#{dest_path}/#{basename}.yml", "w") do |infos_file|
     infos_file.write clean_node(tree).to_yaml
   end
+  puts "#{psd_file.slices.size} slices"
   psd_file.slices.each_with_index do |slice, index|
     slice.to_png
-    slice.save_as_png "#{dest_path}/slice-#{index}.png" if slice
+    slice.save_as_png "#{dest_path}/slice-#{index}.png"
   end
 
   psd_file.image.save_as_png "#{dest_path}/#{basename}.png"
+  system "convert #{dest_path}/#{basename}.png #{dest_path}/#{basename}.pdf"
 end
 
 puts "done!"
